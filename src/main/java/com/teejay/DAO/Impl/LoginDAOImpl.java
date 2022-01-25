@@ -15,12 +15,14 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.teejay.DAO.LoginDAO;
+import com.teejay.Exceptions.IncorrectPasswordException;
 import com.teejay.Exceptions.UserNotFoundException;
 import com.teejay.Model.User;
 import com.teejay.Utils.TeejayUtils;
 
 @Repository
-public class LoginDAOImpl {
+public class LoginDAOImpl implements LoginDAO{
 	@Autowired
 	SessionFactory sessionFactory;
 	@Autowired
@@ -46,30 +48,49 @@ public class LoginDAOImpl {
 			session.close();
 		}
 	}
-
-	public User doLogin(String loginId, String password) throws UserNotFoundException {
+	
+	/*
+	 * Method to login to the system
+	 * 
+	 * @param String loginId
+	 * 
+	 * @param String password
+	 * 
+	 * @return List<User>
+	 */
+	public User doLogin(String loginId, String password) throws UserNotFoundException, IncorrectPasswordException {
 		User result = null;
 		Date current = new Date();
 		String lastLogin = current.toString();
 		Session session = this.sessionFactory.openSession();
 		try {
 			transaction = session.beginTransaction();
-			String hql = "FROM User where loginId='"+loginId+"' and password = '"+password+"'";
+			String hql = "FROM User where loginId='"+loginId+"'";
 			result = (User) session.createQuery(hql).uniqueResult();
 			if(result == null) {
 				throw new UserNotFoundException(loginId);
+			}else if(!result.getPassword().equals(password)){
+				throw new IncorrectPasswordException(loginId);
 			}else {
 				String hqlUpdate = "Update User set lastlogin= '"+lastLogin+";' where userId = "+result.getUserId();
 				session.createQuery(hqlUpdate).executeUpdate();
 			}
 			transaction.commit();
+			return result;
 		} finally {
 			session.close();
 		}
-		return result;
+		
 
 	}
 	
+	/*
+	 * Method to signup the user to the system
+	 * 
+	 * @param User user
+	 * 
+	 * @return List<User>
+	 */
 	public User doSignup(User user) throws UserNotFoundException {
 		Session session = this.sessionFactory.openSession();
 		int userId;
