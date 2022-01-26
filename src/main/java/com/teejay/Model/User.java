@@ -1,9 +1,11 @@
 package com.teejay.Model;
 
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "usertable")
+@Table(name = "users_table")
 public class User {
 	@Id
 	@Column(name = "userid")
@@ -33,6 +35,17 @@ public class User {
 	
 	@Column(name = "loginid")
 	private String loginId;
+	
+//	@OneToMany(fetch = FetchType.EAGER,mappedBy="users",cascade = CascadeType.ALL)
+//    private Set<TradeEntries> tradeEntries;
+//
+//	public Set<TradeEntries> getTradeEntries() {
+//		return tradeEntries;
+//	}
+//
+//	public void setTradeEntries(Set<TradeEntries> tradeEntries) {
+//		this.tradeEntries = tradeEntries;
+//	}
 
 	public int getUserId() {
 		return userId;
