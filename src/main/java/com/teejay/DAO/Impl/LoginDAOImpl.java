@@ -37,6 +37,7 @@ public class LoginDAOImpl implements LoginDAO{
 	private static final Logger LOGGER = LogManager.getLogger(LoginDAOImpl.class);
 	public List<User> dbTest() {
 		Session session = this.sessionFactory.openSession();
+		List<User> result = null;
 		try {
 			transaction = session.beginTransaction();
 			// String sql = "SELECT * FROM userTable";
@@ -44,13 +45,17 @@ public class LoginDAOImpl implements LoginDAO{
 			// query.addEntity(User.class);
 //			//query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
 			// List<User> result = query.list();
-			String hql = "FROM User where username='Sandy' and password = 'Admin123'";
-			List<User> result = session.createQuery(hql).list();
+			String hql = "FROM User where userid='1' and password = 'We2zS6+CR/Q='";
+			result = session.createQuery(hql).list();
 			transaction.commit();
-			return result;
-		} finally {
+			
+		} catch(Exception e){
+			System.out.println(e.getMessage());
+		}finally {
 			session.close();
 		}
+		
+		return result;
 	}
 	
 	/*

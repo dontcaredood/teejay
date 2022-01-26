@@ -37,7 +37,7 @@ public class LoginController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/test", produces = "application/json", method = RequestMethod.GET)
-	public List getLtptest() throws Exception {
+	public List<User> getLtptest() throws Exception {
 		try {
 			return loginService.dbTest();
 		} catch (Exception e) {

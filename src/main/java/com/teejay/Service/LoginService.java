@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.teejay.Exceptions.IncorrectPasswordException;
 import com.teejay.Exceptions.UserNotFoundException;
+import com.teejay.Model.TradeEntries;
 import com.teejay.Model.User;
 
 public interface LoginService {

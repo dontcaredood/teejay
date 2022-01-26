@@ -9,6 +9,7 @@ import com.teejay.DAO.LoginDAO;
 import com.teejay.DAO.Impl.LoginDAOImpl;
 import com.teejay.Exceptions.IncorrectPasswordException;
 import com.teejay.Exceptions.UserNotFoundException;
+import com.teejay.Model.TradeEntries;
 import com.teejay.Model.User;
 import com.teejay.Service.LoginService;
 import com.teejay.Utils.TextModifier;
