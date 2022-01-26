@@ -7,14 +7,14 @@ import com.teejay.Model.User;
 public class TeejayUtils {
 	
 	
-	public User userMapper(User user) {
+	public static User userMapper(User user) {
 		user.setUserLevel(1);
 		user.setLastLogin("Not Yet");
 		user.setIsActive("Y");
 		return user;
 	}
 	
-	public String loginIdGenerator(User user) {
+	public static String loginIdGenerator(User user) {
 		String loginId = "tj"+user.getUsername().substring(1,4)+user.getUserId();
 		return loginId;
 	}

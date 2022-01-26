@@ -15,19 +15,23 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.teejay.Constants.LogConstants;
 import com.teejay.DAO.LoginDAO;
 import com.teejay.Exceptions.IncorrectPasswordException;
 import com.teejay.Exceptions.UserNotFoundException;
 import com.teejay.Model.User;
 import com.teejay.Utils.TeejayUtils;
+import com.teejay.Utils.TextModifier;
 
 @Repository
 public class LoginDAOImpl implements LoginDAO{
 	@Autowired
 	SessionFactory sessionFactory;
-	@Autowired
-	TeejayUtils teejayUtils;
 	
+	@Autowired
+	TextModifier text;
+	
+	TeejayUtils teejayUtils;
 	Transaction transaction = null;
 	
 	private static final Logger LOGGER = LogManager.getLogger(LoginDAOImpl.class);
@@ -65,6 +69,7 @@ public class LoginDAOImpl implements LoginDAO{
 		Session session = this.sessionFactory.openSession();
 		try {
 			transaction = session.beginTransaction();
+			password = text.encrypt(password);
 			String hql = "FROM User where loginId='"+loginId+"'";
 			result = (User) session.createQuery(hql).uniqueResult();
 			if(result == null) {
@@ -94,7 +99,7 @@ public class LoginDAOImpl implements LoginDAO{
 	public User doSignup(User user) throws UserNotFoundException {
 		Session session = this.sessionFactory.openSession();
 		int userId;
-		String loginId;
+		String loginId = null;
 		try {
 			transaction = session.beginTransaction();
 			userId = (int) session.save(user);
@@ -102,7 +107,7 @@ public class LoginDAOImpl implements LoginDAO{
 			user.setLoginId(teejayUtils.loginIdGenerator(user));
 			String hqlUpdate = "Update User set loginId= '"+user.getLoginId()+"' where userId = "+userId;
 			session.createQuery(hqlUpdate).executeUpdate();
-			LOGGER.info(userId);
+			LOGGER.info(LogConstants.logHeader+userId+" user id saved successfully. New Login Id is "+loginId);
 			
 			transaction.commit();
 		} finally {

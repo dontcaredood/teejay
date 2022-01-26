@@ -11,12 +11,15 @@ import com.teejay.Exceptions.IncorrectPasswordException;
 import com.teejay.Exceptions.UserNotFoundException;
 import com.teejay.Model.User;
 import com.teejay.Service.LoginService;
+import com.teejay.Utils.TextModifier;
 
 @Service
 public class LoginServiceImpl implements LoginService {
 
 	@Autowired
 	LoginDAO loginDao;
+	@Autowired
+	TextModifier text;
 	
 	/*
 	 * Method to login to the system
@@ -46,8 +49,16 @@ public class LoginServiceImpl implements LoginService {
 	 * @return List<User>
 	 */
 	public User doSignup(User user) throws UserNotFoundException {
-
-		return loginDao.doSignup(user);
+		String encryptedPass = null;
+		try {
+			encryptedPass = text.encrypt(user.getPassword());
+			user.setPassword(encryptedPass);
+			return loginDao.doSignup(user);
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw e;
+		}
+		
 
 	}
 
