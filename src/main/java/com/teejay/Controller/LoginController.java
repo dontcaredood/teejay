@@ -17,6 +17,7 @@ import com.teejay.Exceptions.UserNotFoundException;
 import com.teejay.Model.User;
 import com.teejay.Service.LoginService;
 import com.teejay.Utils.TeejayUtils;
+import com.teejay.VO.TradeHistory;
 
 @RestController
 @CrossOrigin(exposedHeaders = "Access-Control-Allow-Origin")
@@ -37,9 +38,9 @@ public class LoginController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/test", produces = "application/json", method = RequestMethod.GET)
-	public List<User> getLtptest() throws Exception {
+	public TradeHistory getLtptest() throws Exception {
 		try {
-			return loginService.dbTest();
+			return new TradeHistory();
 		} catch (Exception e) {
 			// TODO: handle exception
 			throw new Exception();
