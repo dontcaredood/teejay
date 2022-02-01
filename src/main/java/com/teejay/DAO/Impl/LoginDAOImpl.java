@@ -20,6 +20,7 @@ import com.teejay.DAO.LoginDAO;
 import com.teejay.Exceptions.IncorrectPasswordException;
 import com.teejay.Exceptions.UserNotFoundException;
 import com.teejay.Model.User;
+import com.teejay.Utils.CommonUtils;
 import com.teejay.Utils.TeejayUtils;
 import com.teejay.Utils.TextModifier;
 
@@ -69,8 +70,6 @@ public class LoginDAOImpl implements LoginDAO{
 	 */
 	public User doLogin(String loginId, String password) throws UserNotFoundException, IncorrectPasswordException {
 		User result = null;
-		Date current = new Date();
-		String lastLogin = current.toString();
 		Session session = this.sessionFactory.openSession();
 		try {
 			transaction = session.beginTransaction();
@@ -82,12 +81,16 @@ public class LoginDAOImpl implements LoginDAO{
 			}else if(!result.getPassword().equals(password)){
 				throw new IncorrectPasswordException(loginId);
 			}else {
-				String hqlUpdate = "Update User set lastlogin= '"+lastLogin+";' where userId = "+result.getUserId();
+				String hqlUpdate = "Update User set lastlogin= '"+CommonUtils.getCurrentDateTime()+"' where userId = "+result.getUserId();
 				session.createQuery(hqlUpdate).executeUpdate();
 			}
+			LOGGER.info(LogConstants.logHeader+"Login successful for Login Id :"+loginId);
 			transaction.commit();
 			return result;
+		}catch(UserNotFoundException | IncorrectPasswordException e) {
+			throw e;
 		} finally {
+			
 			session.close();
 		}
 		
@@ -112,10 +115,10 @@ public class LoginDAOImpl implements LoginDAO{
 			user.setLoginId(teejayUtils.loginIdGenerator(user));
 			String hqlUpdate = "Update User set loginId= '"+user.getLoginId()+"' where userId = "+userId;
 			session.createQuery(hqlUpdate).executeUpdate();
-			LOGGER.info(LogConstants.logHeader+userId+" user id saved successfully. New Login Id is "+loginId);
-			
 			transaction.commit();
+			LOGGER.info(LogConstants.logHeader+userId+" user id saved successfully. New Login Id is "+loginId);
 		} finally {
+			
 			session.close();
 		}
 		return user;

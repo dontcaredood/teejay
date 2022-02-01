@@ -1,5 +1,6 @@
 package com.teejay.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import com.teejay.Exceptions.UserNotFoundException;
 import com.teejay.Model.User;
 import com.teejay.Service.LoginService;
 import com.teejay.Utils.TeejayUtils;
+import com.teejay.VO.TradeHistory;
 
 @RestController
 @CrossOrigin(exposedHeaders = "Access-Control-Allow-Origin")
@@ -37,12 +39,16 @@ public class LoginController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/test", produces = "application/json", method = RequestMethod.GET)
-	public List<User> getLtptest() throws Exception {
+	public List<String> getLtptest() throws Exception {
 		try {
-			return loginService.dbTest();
+			List<String> list = new ArrayList<String>();
+			list.add("IOC");
+			list.add("HINDALCO");
+			
+			return list;
 		} catch (Exception e) {
 			// TODO: handle exception
-			throw new Exception();
+			throw new Exception();	
 		}
 
 	}

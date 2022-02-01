@@ -19,7 +19,7 @@ public class TradeEntries {
 	private int tradeId;
 	
 	@Column(name = "userid")
-	private String userId;
+	private int userId;
 
 	@Column(name = "securityname")
 	private String securityName;
@@ -58,11 +58,11 @@ public class TradeEntries {
 //		this.users = users;
 //	}
 
-	public String getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
