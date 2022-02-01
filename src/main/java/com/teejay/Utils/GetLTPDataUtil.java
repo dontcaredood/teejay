@@ -6,11 +6,19 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.teejay.DAO.Impl.AdminDAOImpl;
+import com.teejay.VO.LtpData;
 
 public class GetLTPDataUtil {
 	
 	private static final String baseUrl = "https://www.google.com/finance/quote/";
-	
+	private static final Logger LOGGER = LogManager.getLogger(AdminDAOImpl.class);
 	/**
 	 * Method to fetch the last traded price of the stock
 	 * 
@@ -18,7 +26,24 @@ public class GetLTPDataUtil {
 	 * 
 	 * @return Double LTP
 	 */
-	public static Double getStockLTP(String tickerName) throws IOException {
+	public static List<LtpData> getLTP(List<String> tickerList) throws IOException {
+		List<LtpData> ltpList = new ArrayList<LtpData>();
+		try {
+			for(String ticker : tickerList) {
+				 
+				ltpList.add(new LtpData(ticker,getStockLTP(ticker))) ;
+			}
+			return ltpList;
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw e;
+		}
+		
+		}
+	
+	private static Double getStockLTP(String tickerName) throws IOException{
+
 		String ltpString = "";
 		String inputLine, result;
 		int counter = 0;
@@ -44,12 +69,12 @@ public class GetLTPDataUtil {
 				}
 				in.close();
 				result = response.toString();
-				String p2 = (String) result.subSequence(15900, 16100);
-				p2 = p2.replace("=", "\":");
-				p2 = p2.replace("\" ", "\",\"");
-				if (p2.contains("data-last-price")) {
-					ltpString = p2.substring(p2.indexOf("data-last-price") - 1,
-							p2.indexOf("data-last-normal-market-timestamp") - 2);
+				String dataString = (String) result.subSequence(15900, 16100);
+				dataString = dataString.replace("=", "\":");
+				dataString = dataString.replace("\" ", "\",\"");
+				if (dataString.contains("data-last-price")) {
+					ltpString = dataString.substring(dataString.indexOf("data-last-price") - 1,
+							dataString.indexOf("data-last-normal-market-timestamp") - 2);
 
 					String ltp_temp = ltpString.substring(ltpString.indexOf(":\"") + 2, ltpString.length() - 1);
 					ltp = Double.parseDouble(ltp_temp);
@@ -63,9 +88,10 @@ public class GetLTPDataUtil {
 			}
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		}
 		return ltp;
 
+	
 	}
 }

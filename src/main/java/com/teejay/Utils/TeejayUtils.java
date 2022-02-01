@@ -17,6 +17,7 @@ public class TeejayUtils {
 	
 	public static String loginIdGenerator(User user) {
 		String loginId = "tj"+user.getUsername().substring(1,4)+user.getUserId();
+		loginId = loginId.toUpperCase();
 		return loginId;
 	}
 	

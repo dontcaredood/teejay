@@ -1,5 +1,6 @@
 package com.teejay.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +39,16 @@ public class LoginController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/test", produces = "application/json", method = RequestMethod.GET)
-	public TradeHistory getLtptest() throws Exception {
+	public List<String> getLtptest() throws Exception {
 		try {
-			return new TradeHistory();
+			List<String> list = new ArrayList<String>();
+			list.add("IOC");
+			list.add("HINDALCO");
+			
+			return list;
 		} catch (Exception e) {
 			// TODO: handle exception
-			throw new Exception();
+			throw new Exception();	
 		}
 
 	}

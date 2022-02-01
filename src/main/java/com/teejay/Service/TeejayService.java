@@ -6,7 +6,8 @@ import com.teejay.Exceptions.ExitEntryAlreadyExistsException;
 import com.teejay.Exceptions.NoHistoryFoundException;
 import com.teejay.Model.TradeEntries;
 import com.teejay.Model.TradeExits;
-import com.teejay.Model.TradeHistories;
+import com.teejay.VO.LtpData;
+import com.teejay.Model.*;
 
 import java.util.*;
 
@@ -21,7 +22,7 @@ public interface TeejayService {
 	 * 
 	 * @return Double LTP
 	 */
-	public Double getStockLTP(String tickerName) throws IOException ;
+	public List<LtpData> getLTP(List<String> tickerName) throws IOException ;
 	
 	/*
 	 * Method to fetch the trade entries from the database

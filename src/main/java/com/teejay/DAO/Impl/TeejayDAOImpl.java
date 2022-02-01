@@ -47,17 +47,17 @@ public class TeejayDAOImpl implements TeejayDAO {
 		int userId = 0;
 		Session session = this.sessionFactory.openSession();
 		try {
-			transaction = session.beginTransaction();
-			userId = getUserId(session, loginId);
+			userId = getUserId(loginId);
 			LOGGER.info("Searching trade entries for userId : " + userId);
 			String hql = "FROM TradeEntries where userid='" + userId + "' and isActive = 'Y'";
 			tradeEntries = session.createQuery(hql).list();
 			LOGGER.info(tradeEntries.size() + " active trades found for loginID");
-			transaction.commit();
+			//
 			return tradeEntries;
 		} catch (Exception e) {
 			throw e;
 		} finally {
+			
 			session.close();
 		}
 	}
@@ -69,15 +69,15 @@ public class TeejayDAOImpl implements TeejayDAO {
 	 * 
 	 * @return int userId
 	 */
-	public int getUserId(Session session, String loginId) {
+	public int getUserId(String loginId) {
 		int userId = 0;
+		Session session = this.sessionFactory.openSession();
 		try {
 			LOGGER.info("Getting User Id for Login ID: " + loginId);
-			transaction = session.getTransaction();
+			
 			String sql = "SELECT userid FROM users_table where loginId = '" + loginId + "'	";
 			SQLQuery<String> query = session.createSQLQuery(sql);
 			List results = query.getResultList();
-			// transaction.commit();
 			if (results.size() > 0) {
 				userId = (int) results.get(0);
 				LOGGER.info("User Id for Login ID: " + loginId + " -> " + userId);
@@ -86,8 +86,12 @@ public class TeejayDAOImpl implements TeejayDAO {
 				System.out.println("Exception happened need to add new exception");
 				throw new NullPointerException();
 			}
+			
 		} catch (Exception e) {
 			throw e;
+		}finally {
+			
+			session.close();
 		}
 
 	}
@@ -174,6 +178,9 @@ public class TeejayDAOImpl implements TeejayDAO {
 			}
 		} catch (Exception e) {
 			throw e;
+		}finally {
+			transaction.commit();
+			session.clear();
 		}
 	}
 
@@ -189,8 +196,7 @@ public class TeejayDAOImpl implements TeejayDAO {
 		Session session = sessionFactory.openSession();
 		int userId = 0;
 		try {
-			transaction = session.beginTransaction();
-			userId = getUserId(session, loginId);
+			userId = getUserId(loginId);
 			String hql = "FROM TradeHistories where userId = "+userId;
 			List<TradeHistories> result = session.createQuery(hql).list();
 			if(result.size()>0) {

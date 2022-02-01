@@ -21,6 +21,7 @@ import com.teejay.Model.TradeExits;
 import com.teejay.Model.TradeHistories;
 import com.teejay.Model.User;
 import com.teejay.Service.TeejayService;
+import com.teejay.VO.LtpData;
 
 @RestController
 @CrossOrigin(exposedHeaders = "Access-Control-Allow-Origin")
@@ -36,9 +37,9 @@ public class TeejayController {
 	 * 
 	 * @return Double LTP
 	 */
-	@RequestMapping(value = "/getLTP/{tickerId}", produces = "application/json", method = RequestMethod.GET)
-	public Double getLtp(@PathVariable String tickerId) throws IOException {
-		return teejayService.getStockLTP(tickerId);
+	@RequestMapping(value = "/getLTP", produces = "application/json", method = RequestMethod.POST)
+	public List<LtpData> getLtp(@RequestBody List<String> tickerId) throws IOException {
+		return teejayService.getLTP(tickerId);
 	}
 
 	/*

@@ -19,6 +19,16 @@ public class CommonUtils {
 	}
 	
 	/**
+	 * @return String currentDate
+	 */
+	public static String getCurrentDateTime() {
+		Date current = new Date();
+		Format f = new SimpleDateFormat("MM/dd/yy hh:mm:ss");
+		String currentDate = f.format(current);
+		return currentDate;
+	}
+	
+	/**
 	 * @param startDate
 	 * @param EndDate
 	 * @return

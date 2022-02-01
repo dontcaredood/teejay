@@ -22,6 +22,7 @@ import com.teejay.Model.TradeHistories;
 import com.teejay.Service.TeejayService;
 import com.teejay.Utils.CommonUtils;
 import com.teejay.Utils.GetLTPDataUtil;
+import com.teejay.VO.LtpData;
 
 @Service
 public class TeejayServiceImpl implements TeejayService {
@@ -35,8 +36,9 @@ public class TeejayServiceImpl implements TeejayService {
 	 * 
 	 * @return Double LTP
 	 */
-	public Double getStockLTP(String tickerName) throws IOException {
-		return GetLTPDataUtil.getStockLTP(tickerName);
+	public List<LtpData> getLTP(List<String> tickerName) throws IOException {
+		
+		return GetLTPDataUtil.getLTP(tickerName);
 	}
 
 	/*
@@ -110,4 +112,6 @@ public class TeejayServiceImpl implements TeejayService {
 			throw e;
 		}
 	}
+
+	
 }
