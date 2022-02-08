@@ -33,6 +33,7 @@ public class GetLTPDataUtil {
 				 
 				ltpList.add(new LtpData(ticker,getStockLTP(ticker))) ;
 			}
+			LOGGER.info("LTP count: "+ltpList.size());
 			return ltpList;
 			
 		} catch (Exception e) {
@@ -80,12 +81,13 @@ public class GetLTPDataUtil {
 					ltp = Double.parseDouble(ltp_temp);
 
 				} else {
-					System.out.println("Error");
+					LOGGER.error("Error Occured");
 				}
 
 			} else {
-				System.out.println("GET request not worked");
+				LOGGER.error("GET request not worked");
 			}
+			LOGGER.info("LTP for: "+tickerName+" is "+ltp);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			throw e;
