@@ -30,10 +30,9 @@ public class GetLTPDataUtil {
 		List<LtpData> ltpList = new ArrayList<LtpData>();
 		try {
 			for(String ticker : tickerList) {
-				 
 				ltpList.add(new LtpData(ticker,getStockLTP(ticker))) ;
 			}
-			LOGGER.info("LTP count: "+ltpList.size());
+			LOGGER.info("LTP successfully fetched, count: "+ltpList.size());
 			return ltpList;
 			
 		} catch (Exception e) {
@@ -87,7 +86,7 @@ public class GetLTPDataUtil {
 			} else {
 				LOGGER.error("GET request not worked");
 			}
-			LOGGER.info("LTP for: "+tickerName+" is "+ltp);
+			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			throw e;
